@@ -2,6 +2,9 @@ function getMean(maximum, minimum) {
   return Math.round((maximum + minimum) / 2)
 }
 
+min = 1
+max = parseInt(process.argv[2]) ;
+
 const readline = require('readline');
 const readlineInterface = readline.createInterface(process.stdin, process.stdout);
 let guess = 50
@@ -13,31 +16,29 @@ function ask(questionText) {
 }
 
 async function start() {
-  console.log("Let's play a game where you (human) make up a number and I (computer) try to guess it.")
+  console.log("Let's play a game where you (human) make up a number between 1 and " + process.argv[2] + " and I (computer) try to guess it.")
   let secretNumber = await ask("What is your secret number?");
   console.log('You entered: ' + secretNumber);
 
-  let yesNo = await ask("Is your number " + guess)
-
-  while (yesNo !== 'y') {
+  let yesNo = await ask("Is your number " + guess + "?\n")
+  console.log(min, max)
+  while (yesNo.toLowerCase() !== 'y') {
 
       if (yesNo.toLowerCase() === "n") {
 
-          let highLow = await ask("Is it higher or lower? ")
+          let highLow = await ask("Is it higher or lower?\n")
 
           if (highLow.toLowerCase() === 'h') {
-
-              min = guess
-              max = 100
-              guess = getMean(max, min)
-              yesNo = await ask(guess)
+              console.log(min, max);
+              min = guess;
+              guess = getMean(max, min);
+              yesNo = await ask("Is it " + guess + "?\n");
 
           } else if (highLow.toLowerCase() === 'l') {
-
-              max = guess
-              min = 1
-              guess = getMean(max, min)
-              yesNo = await ask(guess)
+              console.log(min, max);
+              max = guess;
+              guess = getMean(max, min);
+              yesNo = await ask("Is it " + guess + "?\n");
 
           }
 
